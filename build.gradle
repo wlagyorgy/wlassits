@@ -25,5 +25,6 @@ targetCompatibility = 1.8
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-devtools")
+    compile group: 'com.cloudinary', name: 'cloudinary-http44', version: '1.4.5'
     testCompile("junit:junit")
 }
