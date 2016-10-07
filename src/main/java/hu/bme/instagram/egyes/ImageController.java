@@ -34,10 +34,11 @@ public class ImageController {
     }
 
     @PostMapping("/upload")
-    public String greetingSubmit(@RequestParam(value = "image", required = false) MultipartFile uploadedPhoto,
-                                 @RequestParam(value = "title", required = false) String title,
+    public String greetingSubmit(@RequestParam(value = "image", required = true) MultipartFile uploadedPhoto,
+                                 @RequestParam(value = "title", required = true) String title,
                                  Model model) {
 
+        // TODO: 2016-10-07 check if we need this or not
         if (uploadedPhoto != null && !uploadedPhoto.isEmpty()) {
 
             try {
