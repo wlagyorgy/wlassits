@@ -29,12 +29,12 @@ public class ImageController {
 
 
     @GetMapping("/upload")
-    public String greetingForm(Model model) {
+    public String uploadingForm(Model model) {
         return "upload";
     }
 
     @PostMapping("/upload")
-    public String greetingSubmit(@RequestParam(value = "image", required = true) MultipartFile uploadedPhoto,
+    public String uploadingSubmit(@RequestParam(value = "image", required = true) MultipartFile uploadedPhoto,
                                  @RequestParam(value = "title", required = true) String title,
                                  Model model) {
 
@@ -44,9 +44,12 @@ public class ImageController {
             try {
                 Map uploadResult = null;
 
+                Transformation transformation =
+                        new Transformation().width(1000).height(1000).crop("limit").fetchFormat("png");
 
                 Map options = ObjectUtils.asMap(
-                        "public_id", "temp/" + new SimpleDateFormat("yyyy-MM-dd hh-mm-ss").format(new Date()) + "-" + title
+                        "public_id", "temp/" + new SimpleDateFormat("yyyy-MM-dd hh-mm-ss").format(new Date()) + "-" + title,
+                        "transformation",transformation
                 );
 
 
