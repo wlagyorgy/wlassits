@@ -9,20 +9,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
 @Controller
 public class ImageController {
 
-    Photo photo = new Photo();
+    private Photo photo = new Photo();
 
-    Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+    private Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
             "cloud_name", "egyesrepo-cloudinary",
             "api_key", "525216556637445",
             "api_secret", "PtK7Je6XE8rEVCqRdWcDk_KzTFs"));
@@ -38,11 +35,10 @@ public class ImageController {
                                  @RequestParam(value = "title", required = true) String title,
                                  Model model) {
 
-        // TODO: 2016-10-07 check if we need this or not
         if (uploadedPhoto != null && !uploadedPhoto.isEmpty()) {
 
             try {
-                Map uploadResult = null;
+                Map uploadResult;
 
                 Transformation transformation =
                         new Transformation().width(1000).height(1000).crop("limit").fetchFormat("png");
@@ -64,7 +60,6 @@ public class ImageController {
             }
 
         }
-
 
         model.addAttribute("details", photo.getPublic_id());
 
