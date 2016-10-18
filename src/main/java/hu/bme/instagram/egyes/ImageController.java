@@ -17,7 +17,7 @@ import java.util.Map;
 @Controller
 public class ImageController {
 
-    private Photo photo = new Photo();
+    private Photo photo;
 
     private Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
             "cloud_name", "egyesrepo-cloudinary",
@@ -51,6 +51,7 @@ public class ImageController {
 
                 uploadResult = cloudinary.uploader().upload(uploadedPhoto.getBytes(), options);
 
+                photo = new Photo();
                 photo.setPublic_id((String) uploadResult.get("public_id"));
                 photo.setUrl((String) uploadResult.get("url"));
 
