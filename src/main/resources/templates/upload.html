@@ -4,6 +4,8 @@
     <title>Uploading image</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
     <!-- Bootstrap styles -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
     <!-- Generic page styles -->
@@ -15,13 +17,21 @@
 
     <div class="jumbotron">
 
+        <div class="row">
+            <div class="col-md-6 col-md-offset-6 ">
+                <span th:text="${userName}"></span>
+                <img th:src="${userImage}" alt=""/>
+            </div>
+        </div>
+
+
         <h2>UPLOADING YOUR PHOTO:</h2>
 
         <form action="#" th:action="@{/upload}" method="post" enctype="multipart/form-data">
 
             <p>
 
-                <input  id="fileupload" name="image" type="file"/>
+                <input id="fileupload" name="image" type="file"/>
             </p>
             <p>
                 <label>

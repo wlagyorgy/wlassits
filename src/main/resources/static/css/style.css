@@ -1,9 +1,10 @@
 @charset "UTF-8";
 
 body {
-  padding-top: 60px;
+    padding-top: 60px;
 }
 
-.container{
-  max-width: 600px;
+.container {
+    max-width: 600px;
 }
+
