@@ -51,38 +51,44 @@ public class ImageController {
     }
 
     @PostMapping("/signin")
-    public String singIn(@RequestParam(value = "idtoken", required = true) String idTokenString) throws GeneralSecurityException, IOException {
+    public String singIn(@RequestParam(value = "idtoken", required = true) String idTokenString) {
 
-        JsonFactory jsonFactory = new JacksonFactory();
-        NetHttpTransport transport = new NetHttpTransport();
+        try {
+            JsonFactory jsonFactory = new JacksonFactory();
+            NetHttpTransport transport = new NetHttpTransport();
 
-        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
-                .setAudience(Arrays.asList(CLIENT_ID))
-                // If you retrieved the token on Android using the Play Services 8.3 API or newer, set
-                // the issuer to "https://accounts.google.com". Otherwise, set the issuer to
-                // "accounts.google.com". If you need to verify tokens from multiple sources, build
-                // a GoogleIdTokenVerifier for each issuer and try them both.
-                .setIssuer("accounts.google.com")
-                .build();
+            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
+                    .setAudience(Arrays.asList(CLIENT_ID))
+                    // If you retrieved the token on Android using the Play Services 8.3 API or newer, set
+                    // the issuer to "https://accounts.google.com". Otherwise, set the issuer to
+                    // "accounts.google.com". If you need to verify tokens from multiple sources, build
+                    // a GoogleIdTokenVerifier for each issuer and try them both.
+                    .setIssuer("accounts.google.com")
+                    .build();
 
-        GoogleIdToken idToken = verifier.verify(idTokenString);
-        if (idToken != null) {
-            Payload payload = idToken.getPayload();
+            GoogleIdToken idToken = verifier.verify(idTokenString);
 
-            // User infók eltárolása
-            user = new User();
-            user.setUserId(payload.getSubject());
-            user.setName((String) payload.get("name"));
-            user.setPictureUrl((String) payload.get("picture"));
+            if (idToken != null) {
+                Payload payload = idToken.getPayload();
 
+                // User infók eltárolása
+                user = new User();
+                user.setUserId(payload.getSubject());
+                user.setName((String) payload.get("name"));
+                user.setPictureUrl((String) payload.get("picture"));
+                return "upload";
+                // TODO: 2016-10-20 itt valamiért nem visz át az upload.html-re
 
-        } else {
-            System.out.println("Invalid ID token.");
+            } else {
+                System.out.println("Invalid ID token.");
+                return "signin";
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             return "signin";
         }
 
-        return "upload";
-        // TODO: 2016-10-20 itt valamiért nem visz át az upload.html-re
     }
 
 
