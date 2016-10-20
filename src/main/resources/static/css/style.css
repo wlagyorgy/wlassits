@@ -8,3 +8,6 @@ body {
     max-width: 600px;
 }
 
+#signin-wrapper{
+    display: inline-block;
+}

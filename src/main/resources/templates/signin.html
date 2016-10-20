@@ -1,11 +1,10 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
 
     <title>BME Instagram like app</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
+    <meta name="google-signin-scope" content="profile email"/>
 
     <!--Google Sign-in-->
     <meta name="google-signin-client_id"
@@ -24,18 +23,22 @@
 
 <div class="container text-center">
     <div class="jumbotron">
-        <h2>LOGIN</h2>
-        <div class="row ">
+        <div class="row">
 
-            <div class="col-md-4 col-md-offset-4">
-                <div class="g-signin2" data-onsuccess="onSignIn"></div>
-            </div>
+            <h2>LOGIN</h2>
+        </div>
+        <div id="signin-wrapper" class="row">
+
+            <div class="g-signin2"
+                 data-onsuccess="onSignIn"
+                 data-onfailure="onSignInFailure"
+                 data-width="240"
+                 data-height="50"
+                 data-theme="light"
+                 data-longtitle="true"></div>
         </div>
     </div>
 </div>
-
-
-<script src="https://apis.google.com/js/platform.js" async="async" defer="defer"></script>
 
 
 <script>
@@ -55,9 +58,12 @@
         };
         xhr.send('idtoken=' + id_token);
     }
-
+    function onSignInFailure() {
+        console.log(error);
+    }
 </script>
 
+<script src="https://apis.google.com/js/platform.js" async="async" defer="defer"></script>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
