@@ -1,19 +1,9 @@
-package hu.bme.instagram.egyes.Entities;
+package hu.bme.instagram.egyes;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.HashSet;
-import java.util.Set;
-
-@Entity
 public class User {
-    @Id
     private String userId;
     private String name;
     private String pictureUrl;
-    @OneToMany(mappedBy = "user")
-    private Set<Picture> pictures = new HashSet<>();
 
     public String getUserId() {
         return userId;
