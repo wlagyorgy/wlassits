@@ -51,7 +51,7 @@ public class ImageController {
     }
 
     @PostMapping("/signin")
-    public String singIn(@RequestParam(value = "idtoken", required = true) String idTokenString) {
+    public String signIn(@RequestParam(value = "idtoken", required = true) String idTokenString) {
 
         try {
             JsonFactory jsonFactory = new JacksonFactory();
