@@ -10,13 +10,13 @@ import com.cloudinary.utils.ObjectUtils;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import hu.bme.instagram.egyes.Entities.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -35,6 +35,7 @@ public class ImageController {
             "cloud_name", "egyesrepo-cloudinary",
             "api_key", "525216556637445",
             "api_secret", "PtK7Je6XE8rEVCqRdWcDk_KzTFs"));
+
 
     @RequestMapping("/")
     public String index() {
@@ -76,7 +77,7 @@ public class ImageController {
                 user.setUserId(payload.getSubject());
                 user.setName((String) payload.get("name"));
                 user.setPictureUrl((String) payload.get("picture"));
-                return "upload";
+                return "redirect:upload";
                 // TODO: 2016-10-20 itt valamiért nem visz át az upload.html-re
 
             } else {
