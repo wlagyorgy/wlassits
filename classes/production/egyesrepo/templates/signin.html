@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>BME Instagram like app</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="google-signin-scope" content="profile email"/>
+
+    <!--Google Sign-in-->
+    <meta name="google-signin-client_id"
+          content="941751993774-vcefv09ou5poadotds1e0clvsma43qjd.apps.googleusercontent.com"/>
+
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"/>
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <!-- Generic page styles -->
+    <link rel="stylesheet" href="/css/style.css"/>
+
+</head>
+<body>
+
+
+<div class="container text-center">
+    <div class="jumbotron">
+        <div class="row">
+
+            <h2>LOGIN</h2>
+        </div>
+        <div id="signin-wrapper" class="row">
+
+            <div class="g-signin2"
+                 data-onsuccess="onSignIn"
+                 data-onfailure="onSignInFailure"
+                 data-width="240"
+                 data-height="50"
+                 data-theme="light"
+                 data-longtitle="true"></div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function onSignIn(googleUser) {
+//        After a user successfully signs in, get the user's ID token
+        var id_token = googleUser.getAuthResponse().id_token;
+        var profile = googleUser.getBasicProfile();
+
+//        Then, send the ID token to your server with an HTTPS POST request:
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('POST', 'http://localhost:8080/signin');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            console.log('Signed in as: ' + profile.getName());
+//            console.log('Signed in as: ' + xhr.responseText);
+        };
+        xhr.send('idtoken=' + id_token);
+    }
+    function onSignInFailure() {
+        console.log(error);
+    }
+</script>
+
+<script src="https://apis.google.com/js/platform.js" async="async" defer="defer"></script>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

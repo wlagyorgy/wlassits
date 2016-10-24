@@ -118,9 +118,12 @@ public class ImageController {
                 Transformation transformation =
                         new Transformation().width(1000).height(1000).crop("limit").fetchFormat("png");
 
+                String[] allowedImageFormats = new String[]{"jpg", "png","bmp"};
+
                 Map options = ObjectUtils.asMap(
                         "public_id", "temp/" + new SimpleDateFormat("yyyy-MM-dd hh-mm-ss").format(new Date()) + "-" + title,
-                        "transformation", transformation
+                        "transformation", transformation,
+                        "allowed_formats", allowedImageFormats
                 );
 
 
