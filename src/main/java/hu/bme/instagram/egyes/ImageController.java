@@ -76,8 +76,7 @@ public class ImageController {
                 user.setUserId(payload.getSubject());
                 user.setName((String) payload.get("name"));
                 user.setPictureUrl((String) payload.get("picture"));
-                return "upload";
-                // TODO: 2016-10-20 itt valamiért nem visz át az upload.html-re
+
 
             } else {
                 System.out.println("Invalid ID token.");
@@ -89,6 +88,8 @@ public class ImageController {
             return "signin";
         }
 
+        return "upload";
+        // TODO: 2016-10-20 itt valamiért nem visz át az upload.html-re
     }
 
 
