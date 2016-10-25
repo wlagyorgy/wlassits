@@ -1,4 +1,4 @@
-package hu.bme.instagram.egyes;
+package entity;
 
 public class User {
     private String userId;

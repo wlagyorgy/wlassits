@@ -14,9 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import entity.Photo;
+import entity.User;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -133,7 +134,7 @@ public class ImageController {
                 photo.setPublic_id((String) uploadResult.get("public_id"));
                 photo.setUrl((String) uploadResult.get("url"));
 
-//                ha sikeres a képfeltöltés, akkor tovább küldjök a result page-re
+                //ha sikeres a képfeltöltés, akkor tovább küldjök a result page-re
                 model.addAttribute("details", photo.getPublic_id());
 
                 model.addAttribute("photo", cloudinary.url()
