@@ -1,14 +1,21 @@
 package entity;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
 public class Photo {
+    @Id
     private String public_id;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date created_at;
     private String url;
     private int width;
     private int height;
     private Long bytes;
+    @ManyToOne
+    @JoinColumn(name = "user")
+    private User user;
 
     public String getPublic_id() {
         return public_id;
@@ -56,5 +63,13 @@ public class Photo {
 
     public void setBytes(Long bytes) {
         this.bytes = bytes;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

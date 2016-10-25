@@ -74,9 +74,9 @@ public class ImageController {
 
                 // User infók eltárolása
                 user = new User();
-                user.setUserId(payload.getSubject());
+                user.setToken(payload.getSubject());
                 user.setName((String) payload.get("name"));
-                user.setPictureUrl((String) payload.get("picture"));
+                user.setGooglePictureUrl((String) payload.get("picture"));
 
 
             } else {
@@ -98,7 +98,7 @@ public class ImageController {
 
         if (user != null) {
             model.addAttribute("userName", user.getName());
-            model.addAttribute("userImage", user.getPictureUrl());
+            model.addAttribute("userImage", user.getGooglePictureUrl());
         } else {
             return "redirect:signin";
         }

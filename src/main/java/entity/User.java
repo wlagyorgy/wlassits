@@ -1,16 +1,33 @@
 package entity;
 
-public class User {
-    private String userId;
-    private String name;
-    private String pictureUrl;
+import javax.persistence.*;
+import java.util.Set;
 
-    public String getUserId() {
-        return userId;
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int userId;
+    private String token;
+    private String name;
+    private String googlePictureUrl;
+    @OneToMany(mappedBy = "user")
+    private Set<Photo> photos;
+
+    public String getGooglePictureUrl() {
+        return googlePictureUrl;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setGooglePictureUrl(String googlePictureUrl) {
+        this.googlePictureUrl = googlePictureUrl;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getName() {
@@ -21,11 +38,19 @@ public class User {
         this.name = name;
     }
 
-    public String getPictureUrl() {
-        return pictureUrl;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public Set<Photo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(Set<Photo> photos) {
+        this.photos = photos;
     }
 }
