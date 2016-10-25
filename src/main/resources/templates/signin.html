@@ -56,7 +56,12 @@
             console.log('Signed in as: ' + profile.getName());
 //            console.log('Signed in as: ' + xhr.responseText);
         };
+        console.log('sending post')
         xhr.send('idtoken=' + id_token);
+        xhr.onreadystatechange = function () {
+            window.location.href = "upload.html";
+        }
+        
     }
     function onSignInFailure() {
         console.log(error);

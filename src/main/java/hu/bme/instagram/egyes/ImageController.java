@@ -53,7 +53,7 @@ public class ImageController {
 
     @PostMapping("/signin")
     public String signIn(@RequestParam(value = "idtoken", required = true) String idTokenString) {
-
+        System.out.println("Signin POST received");
         try {
             JsonFactory jsonFactory = new JacksonFactory();
             NetHttpTransport transport = new NetHttpTransport();
@@ -90,7 +90,6 @@ public class ImageController {
         }
 
         return "upload";
-        // TODO: 2016-10-20 itt valamiért nem visz át az upload.html-re
     }
 
 
