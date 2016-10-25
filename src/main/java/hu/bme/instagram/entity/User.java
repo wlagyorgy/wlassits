@@ -1,13 +1,15 @@
-package entity;
+package hu.bme.instagram.entity;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int userId;
+    private Integer userId;
+
     private String token;
     private String name;
     private String googlePictureUrl;
@@ -38,11 +40,11 @@ public class User {
         this.name = name;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

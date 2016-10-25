@@ -1,12 +1,14 @@
-package entity;
+package hu.bme.instagram.entity;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 public class Photo {
+
     @Id
     private String public_id;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date created_at;
     private String url;
