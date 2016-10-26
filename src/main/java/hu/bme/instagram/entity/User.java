@@ -1,8 +1,11 @@
 package hu.bme.instagram.entity;
 
+import org.springframework.context.annotation.Scope;
+
 import javax.persistence.*;
 import java.util.Set;
 
+@Scope("session")
 @Entity
 public class User {
 
