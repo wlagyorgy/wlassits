@@ -1,4 +1,4 @@
-package hu.bme.instagram.egyes;
+package hu.bme.instagram.controllers;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
@@ -27,7 +27,6 @@ import java.util.Map;
 @Controller
 public class ImageController {
 
-    private Photo photo;
     private User user;
     //    Google API clien id for google sign-in auth2
     private final static String CLIENT_ID = "941751993774-vcefv09ou5poadotds1e0clvsma43qjd.apps.googleusercontent.com";
@@ -52,7 +51,9 @@ public class ImageController {
     }
 
     @PostMapping("/signin")
-    public String signIn(@RequestParam(value = "idtoken", required = true) String idTokenString) {
+    public String signIn(@RequestParam(value = "idtoken", required = true) String idTokenString,
+                         @RequestParam(value = "username", required = true) String userName,
+                         @RequestParam(value = "imageURL", required = true) String profilePictureURL) {
         System.out.println("Signin POST received");
         try {
             JsonFactory jsonFactory = new JacksonFactory();
@@ -75,10 +76,8 @@ public class ImageController {
                 // User infók eltárolása
                 user = new User();
                 user.setToken(payload.getSubject());
-                user.setName((String) payload.get("name"));
-                user.setGooglePictureUrl((String) payload.get("picture"));
-
-
+                user.setName(userName);
+                user.setGooglePictureUrl(profilePictureURL);
             } else {
                 System.out.println("Invalid ID token.");
                 return "signin";
@@ -129,7 +128,7 @@ public class ImageController {
 
                 uploadResult = cloudinary.uploader().upload(uploadedPhoto.getBytes(), options);
 
-                photo = new Photo();
+                Photo photo = new Photo();
                 photo.setPublic_id((String) uploadResult.get("public_id"));
                 photo.setUrl((String) uploadResult.get("url"));
 
