@@ -28,10 +28,7 @@ public class SigninController {
 
     @PostMapping("/signin")
     public String signIn(@RequestParam(value = "idtoken", required = true) String idTokenString,
-                         @RequestParam(value = "username", required = true) String userName,
-                         @RequestParam(value = "imageURL", required = true) String profilePictureURL,
                          HttpServletRequest request) {
-        System.out.println("Signin POST received");
         try {
             JsonFactory jsonFactory = new JacksonFactory();
             NetHttpTransport transport = new NetHttpTransport();
@@ -53,8 +50,9 @@ public class SigninController {
                 // User infók eltárolása
                 User user = new User();
                 user.setToken(payload.getSubject());
-                user.setName(userName);
-                user.setGooglePictureUrl(profilePictureURL);
+                user.setName((String) payload.get("name"));
+                user.setGooglePictureUrl((String) payload.get("picture"));
+
                 request.getSession().setAttribute("user", user);
             } else {
                 System.out.println("Invalid ID token.");
