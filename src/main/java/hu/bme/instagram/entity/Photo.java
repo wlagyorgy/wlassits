@@ -12,9 +12,6 @@ public class Photo {
     @Temporal(TemporalType.TIMESTAMP)
     private Date created_at;
     private String url;
-    private int width;
-    private int height;
-    private Long bytes;
     @ManyToOne
     @JoinColumn(name = "user")
     private User user;
@@ -41,30 +38,6 @@ public class Photo {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public Long getBytes() {
-        return bytes;
-    }
-
-    public void setBytes(Long bytes) {
-        this.bytes = bytes;
     }
 
     public User getUser() {

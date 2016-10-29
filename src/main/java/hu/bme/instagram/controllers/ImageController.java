@@ -10,6 +10,7 @@ import com.cloudinary.utils.ObjectUtils;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import hu.bme.instagram.dal.PhotoRepository;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -32,6 +33,9 @@ import java.util.Map;
 public class ImageController {
 
     private User user;
+
+    @Autowired
+    private PhotoRepository photoRepository;
 
     private Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
             "cloud_name", "egyesrepo-cloudinary",
@@ -62,42 +66,52 @@ public class ImageController {
             return "upload";
         }
 
+        Map options = getOptions(title);
 
         Map uploadResult;
-
-        Transformation transformation =
-                new Transformation().width(1000).height(1000).crop("limit").fetchFormat("png");
-
-        String[] allowedImageFormats = new String[]{"jpg", "png","bmp"};
-
-        Map options = ObjectUtils.asMap(
-                "public_id", "temp/" + new SimpleDateFormat("yyyy-MM-dd hh-mm-ss").format(new Date()) + "-" + title,
-                "transformation", transformation,
-                "allowed_formats", allowedImageFormats
-        );
-
-
         try {
             uploadResult = cloudinary.uploader().upload(uploadedPhoto.getBytes(), options);
         } catch (IOException e) {
-            System.out.println("Hiba a feltöltésnél:" + e.getMessage());
+            System.out.println("Error at upload:\n" + e.getMessage());
             return "upload";
         }
 
-        Photo photo = new Photo();
-        photo.setPublic_id((String) uploadResult.get("public_id"));
-        photo.setUrl((String) uploadResult.get("url"));
+        Photo photo = getPhotoInstance(uploadResult);
+        photoRepository.save(photo);
 
-        //ha sikeres a képfeltöltés, akkor tovább küldjük a result page-re
+        addAttributesToModel(model, photo);
+
+        return "result";
+
+    }
+
+    private void addAttributesToModel(Model model, Photo photo) {
         model.addAttribute("details", photo.getPublic_id());
 
         model.addAttribute("photo", cloudinary.url()
                 .transformation(new Transformation().width(100).height(150).crop("fill"))
                 .imageTag(photo.getPublic_id())
         );
+    }
 
-            return "result";
+    private Map getOptions(@RequestParam(value = "title", required = true) String title) {
+        Transformation transformation =
+                new Transformation().width(1000).height(1000).crop("limit").fetchFormat("png");
 
+        String[] allowedImageFormats = new String[]{"jpg", "png","bmp"};
+
+        return ObjectUtils.asMap(
+                    "public_id", "temp/" + new SimpleDateFormat("yyyy-MM-dd hh-mm-ss").format(new Date()) + "-" + title,
+                    "transformation", transformation,
+                    "allowed_formats", allowedImageFormats
+            );
+    }
+
+    private Photo getPhotoInstance(Map uploadResult) {
+        Photo photo = new Photo();
+        photo.setPublic_id((String) uploadResult.get("public_id"));
+        photo.setUrl((String) uploadResult.get("url"));
+        return photo;
     }
 
 }
