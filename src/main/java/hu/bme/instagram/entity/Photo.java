@@ -1,6 +1,7 @@
 package hu.bme.instagram.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -14,6 +15,7 @@ public class Photo {
     private String url;
     @ManyToOne
     @JoinColumn(name = "user")
+    @NotNull
     private User user;
 
     public String getPublic_id() {
