@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Arrays;
 
 @Controller
@@ -32,40 +34,56 @@ public class SigninController {
                          @RequestParam(value = "imageURL", required = true) String profilePictureURL,
                          HttpServletRequest request) {
         System.out.println("Signin POST received");
+
+        GoogleIdTokenVerifier verifier = getGoogleIdTokenVerifier();
+
+        GoogleIdToken idToken = null;
         try {
-            JsonFactory jsonFactory = new JacksonFactory();
-            NetHttpTransport transport = new NetHttpTransport();
-
-            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
-                    .setAudience(Arrays.asList(CLIENT_ID))
-                    // If you retrieved the token on Android using the Play Services 8.3 API or newer, set
-                    // the issuer to "https://accounts.google.com". Otherwise, set the issuer to
-                    // "accounts.google.com". If you need to verify tokens from multiple sources, build
-                    // a GoogleIdTokenVerifier for each issuer and try them both.
-                    .setIssuer("accounts.google.com")
-                    .build();
-
-            GoogleIdToken idToken = verifier.verify(idTokenString);
-
-            if (idToken != null) {
-                GoogleIdToken.Payload payload = idToken.getPayload();
-
-                // User infók eltárolása
-                User user = new User();
-                user.setToken(payload.getSubject());
-                user.setName(userName);
-                user.setGooglePictureUrl(profilePictureURL);
-                request.getSession().setAttribute("user", user);
-            } else {
-                System.out.println("Invalid ID token.");
-                return "signin";
-            }
-
+            idToken = getGoogleIdToken(verifier, idTokenString);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return "signin";
         }
 
+        User user = getUserWithUpdatedInfos(userName, profilePictureURL, idToken);
+        request.getSession().setAttribute("user", user);
+
         return "upload";
+    }
+
+    private User getUserWithUpdatedInfos(@RequestParam(value = "username", required = true) String userName, @RequestParam(value = "imageURL", required = true) String profilePictureURL, GoogleIdToken idToken) {
+        GoogleIdToken.Payload payload = idToken.getPayload();
+        // User infók eltárolása
+        User user = new User();
+        user.setToken(payload.getSubject());
+        user.setName(userName);
+        user.setGooglePictureUrl(profilePictureURL);
+        return user;
+    }
+
+    private GoogleIdTokenVerifier getGoogleIdTokenVerifier() {
+        JsonFactory jsonFactory = new JacksonFactory();
+        NetHttpTransport transport = new NetHttpTransport();
+
+        return new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
+                .setAudience(Arrays.asList(CLIENT_ID))
+                .setIssuer("accounts.google.com")
+                .build();
+    }
+
+    private GoogleIdToken getGoogleIdToken(GoogleIdTokenVerifier verifier, String idTokenString) throws Exception {
+        GoogleIdToken idToken;
+        try {
+            idToken = verifier.verify(idTokenString);
+        } catch (Exception e) {
+            System.out.println("Exception while verifying id token");
+            throw(e);
+        }
+
+        if (idToken == null) {
+            throw(new Exception("Invalid id token(=null)"));
+        }
+
+        return idToken;
     }
 }

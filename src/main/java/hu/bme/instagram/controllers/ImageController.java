@@ -57,49 +57,46 @@ public class ImageController {
                                   @RequestParam(value = "title", required = true) String title,
                                   Model model) {
 
-        if (uploadedPhoto.getSize() <= 5000000) {
-
-            try {
-                Map uploadResult;
-
-                Transformation transformation =
-                        new Transformation().width(1000).height(1000).crop("limit").fetchFormat("png");
-
-                String[] allowedImageFormats = new String[]{"jpg", "png","bmp"};
-
-                Map options = ObjectUtils.asMap(
-                        "public_id", "temp/" + new SimpleDateFormat("yyyy-MM-dd hh-mm-ss").format(new Date()) + "-" + title,
-                        "transformation", transformation,
-                        "allowed_formats", allowedImageFormats
-                );
-
-
-                uploadResult = cloudinary.uploader().upload(uploadedPhoto.getBytes(), options);
-
-                Photo photo = new Photo();
-                photo.setPublic_id((String) uploadResult.get("public_id"));
-                photo.setUrl((String) uploadResult.get("url"));
-
-                //ha sikeres a képfeltöltés, akkor tovább küldjük a result page-re
-                model.addAttribute("details", photo.getPublic_id());
-
-                model.addAttribute("photo", cloudinary.url()
-                        .transformation(new Transformation().width(100).height(150).crop("fill"))
-                        .imageTag(photo.getPublic_id())
-                );
-
-                return "result";
-
-
-            } catch (IOException e) {
-                System.out.println("Hiba a feltöltésnél:" + e.getMessage());
-                return "upload";
-            }
-
-        } else {
+        if (uploadedPhoto.getSize() > 5000000) {
             System.out.println("A fájl mérete nagyobb a megengedett 5MB-nál.");
             return "upload";
         }
+
+
+        Map uploadResult;
+
+        Transformation transformation =
+                new Transformation().width(1000).height(1000).crop("limit").fetchFormat("png");
+
+        String[] allowedImageFormats = new String[]{"jpg", "png","bmp"};
+
+        Map options = ObjectUtils.asMap(
+                "public_id", "temp/" + new SimpleDateFormat("yyyy-MM-dd hh-mm-ss").format(new Date()) + "-" + title,
+                "transformation", transformation,
+                "allowed_formats", allowedImageFormats
+        );
+
+
+        try {
+            uploadResult = cloudinary.uploader().upload(uploadedPhoto.getBytes(), options);
+        } catch (IOException e) {
+            System.out.println("Hiba a feltöltésnél:" + e.getMessage());
+            return "upload";
+        }
+
+        Photo photo = new Photo();
+        photo.setPublic_id((String) uploadResult.get("public_id"));
+        photo.setUrl((String) uploadResult.get("url"));
+
+        //ha sikeres a képfeltöltés, akkor tovább küldjük a result page-re
+        model.addAttribute("details", photo.getPublic_id());
+
+        model.addAttribute("photo", cloudinary.url()
+                .transformation(new Transformation().width(100).height(150).crop("fill"))
+                .imageTag(photo.getPublic_id())
+        );
+
+            return "result";
 
     }
 
