@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 @Controller
 @Scope("session")
@@ -79,7 +79,7 @@ public class SigninController {
         NetHttpTransport transport = new NetHttpTransport();
 
         return new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
-                .setAudience(Arrays.asList(CLIENT_ID))
+                .setAudience(Collections.singletonList(CLIENT_ID))
                 .setIssuer("accounts.google.com")
                 .build();
     }

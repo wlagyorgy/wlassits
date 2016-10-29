@@ -1,15 +1,9 @@
 package hu.bme.instagram.controllers;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
 import hu.bme.instagram.dal.PhotoRepository;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +17,6 @@ import hu.bme.instagram.entity.User;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
@@ -77,6 +70,7 @@ public class ImageController {
         }
 
         Photo photo = getPhotoInstance(uploadResult);
+        System.out.println("Saving image to db. Image ID is: " + photo.getPublic_id());
         photoRepository.save(photo);
 
         addAttributesToModel(model, photo);

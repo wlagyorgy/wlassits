@@ -11,10 +11,4 @@ import java.util.List;
 public interface UserRepository extends CrudRepository<User, String> {
 
     List<User> findByName(String name);
-
-    @Override
-    User save(User entity);
-
-    @Override
-    boolean exists(String s);
 }
