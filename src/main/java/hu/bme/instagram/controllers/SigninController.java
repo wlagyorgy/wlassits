@@ -5,8 +5,10 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import hu.bme.instagram.dal.UserRepository;
 import hu.bme.instagram.entity.User;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,9 @@ import java.util.Arrays;
 public class SigninController {
     //    Google API clien id for google sign-in auth2
     private final static String CLIENT_ID = "941751993774-vcefv09ou5poadotds1e0clvsma43qjd.apps.googleusercontent.com";
+
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("/signin")
     public String signInGet() {
@@ -42,16 +47,28 @@ public class SigninController {
         }
 
         User user = getUserWithUpdatedInfos(idToken);
+        System.out.println("User created, user ID is: " + user.getUserId());
+        user = saveUserInDB(user);
+        System.out.println("Adding user to session memory");
         request.getSession().setAttribute("user", user);
 
         return "upload";
     }
 
+    private User saveUserInDB(User user) {
+        try {
+            if (!userRepository.exists(user.getUserId()))
+                user = userRepository.save(user);
+        } catch (IllegalArgumentException e) {
+            System.out.println("user == null at saving user into DB\n" + e.getMessage());
+        }
+        return user;
+    }
+
     private User getUserWithUpdatedInfos(GoogleIdToken idToken) {
         GoogleIdToken.Payload payload = idToken.getPayload();
-        // User infók eltárolása
         User user = new User();
-        user.setToken(payload.getSubject());
+        user.setUserId(payload.getSubject());
         user.setName((String) payload.get("name"));
         user.setGooglePictureUrl((String) payload.get("picture"));
         return user;

@@ -8,8 +8,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends CrudRepository<User, Integer> {
+public interface UserRepository extends CrudRepository<User, String> {
 
-    public List<User> findByName(String name);
+    List<User> findByName(String name);
 
+    @Override
+    User save(User entity);
+
+    @Override
+    boolean exists(String s);
 }

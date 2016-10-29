@@ -10,10 +10,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer userId;
-
-    private String token;
+    private String userId;
     private String name;
     private String googlePictureUrl;
     @OneToMany(mappedBy = "user")
@@ -27,14 +24,6 @@ public class User {
         this.googlePictureUrl = googlePictureUrl;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     public String getName() {
         return name;
     }
@@ -43,19 +32,19 @@ public class User {
         this.name = name;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
     public Set<Photo> getPhotos() {
         return photos;
     }
 
     public void setPhotos(Set<Photo> photos) {
         this.photos = photos;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
