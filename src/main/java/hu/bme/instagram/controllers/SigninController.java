@@ -33,7 +33,7 @@ public class SigninController {
 
         GoogleIdTokenVerifier verifier = getGoogleIdTokenVerifier();
 
-        GoogleIdToken idToken = null;
+        GoogleIdToken idToken;
         try {
             idToken = getGoogleIdToken(verifier, idTokenString);
         } catch (Exception e) {
