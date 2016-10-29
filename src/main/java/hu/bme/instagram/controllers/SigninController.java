@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.Arrays;
 
 @Controller
@@ -30,8 +28,6 @@ public class SigninController {
 
     @PostMapping("/signin")
     public String signIn(@RequestParam(value = "idtoken", required = true) String idTokenString,
-                         @RequestParam(value = "username", required = true) String userName,
-                         @RequestParam(value = "imageURL", required = true) String profilePictureURL,
                          HttpServletRequest request) {
         System.out.println("Signin POST received");
 
@@ -45,19 +41,19 @@ public class SigninController {
             return "signin";
         }
 
-        User user = getUserWithUpdatedInfos(userName, profilePictureURL, idToken);
+        User user = getUserWithUpdatedInfos(idToken);
         request.getSession().setAttribute("user", user);
 
         return "upload";
     }
 
-    private User getUserWithUpdatedInfos(@RequestParam(value = "username", required = true) String userName, @RequestParam(value = "imageURL", required = true) String profilePictureURL, GoogleIdToken idToken) {
+    private User getUserWithUpdatedInfos(GoogleIdToken idToken) {
         GoogleIdToken.Payload payload = idToken.getPayload();
         // User infók eltárolása
         User user = new User();
         user.setToken(payload.getSubject());
-        user.setName(userName);
-        user.setGooglePictureUrl(profilePictureURL);
+        user.setName((String) payload.get("name"));
+        user.setGooglePictureUrl((String) payload.get("picture"));
         return user;
     }
 
