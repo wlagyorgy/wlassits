@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import hu.bme.instagram.entity.Photo;
 import hu.bme.instagram.entity.User;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -52,7 +53,8 @@ public class ImageController {
     @PostMapping("/upload")
     public String uploadingSubmit(@RequestParam(value = "image", required = true) MultipartFile uploadedPhoto,
                                   @RequestParam(value = "title", required = true) String title,
-                                  Model model) {
+                                  Model model,
+                                  RedirectAttributes redirectAttributes) {
 
         if (uploadedPhoto.getSize() > 5000000) {
             System.out.println("A fájl mérete nagyobb a megengedett 5MB-nál.");
@@ -73,9 +75,12 @@ public class ImageController {
         System.out.println("Saving image to db. Image ID is: " + photo.getPublic_id());
         photoRepository.save(photo);
 
+        redirectAttributes.addFlashAttribute("photo", cloudinary.url()
+                        .transformation(new Transformation().width(100).height(150).crop("fill"))
+                        .imageTag(photo.getPublic_id()));
         addAttributesToModel(model, photo);
 
-        return "result";
+        return "redirect:result";
 
     }
 
@@ -108,6 +113,13 @@ public class ImageController {
         photo.setUser(user);
         photo.setCreated_at(new Date());
         return photo;
+    }
+
+    @GetMapping("/result")
+    public String getResultPage(@ModelAttribute Photo photo)
+    {
+
+        return "result";
     }
 
 }

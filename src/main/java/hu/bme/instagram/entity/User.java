@@ -14,7 +14,7 @@ public class User {
     private String name;
     private String googlePictureUrl;
     @OneToMany(mappedBy = "user")
-    private Set<Photo> photos;
+    private Set<Photo> photos ;
 
     public String getGooglePictureUrl() {
         return googlePictureUrl;

@@ -40,7 +40,7 @@
     </div>
 </div>
 
-
+<!--
 <script>
     function onSignIn(googleUser) {
 //        After a user successfully signs in, get the user's ID token
@@ -56,13 +56,19 @@
             console.log('Signed in as: ' + profile.getName());
 //            console.log('Signed in as: ' + xhr.responseText);
         };
+        console.log('sending post')
         xhr.send('idtoken=' + id_token);
+        xhr.onreadystatechange = function () {
+            window.location.href = "upload.html";
+        }
+        
     }
     function onSignInFailure() {
         console.log(error);
     }
 </script>
-
+-->
+<script src="/js/signin.js"></script>
 <script src="https://apis.google.com/js/platform.js" async="async" defer="defer"></script>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
