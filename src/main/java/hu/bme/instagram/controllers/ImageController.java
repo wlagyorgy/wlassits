@@ -18,8 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 
 @Controller
@@ -76,11 +75,11 @@ public class ImageController {
         photoRepository.save(photo);
 
         redirectAttributes.addFlashAttribute("photo", cloudinary.url()
-                        .transformation(new Transformation().width(100).height(150).crop("fill"))
-                        .imageTag(photo.getPublic_id()));
+                .transformation(new Transformation().width(100).height(150).crop("fill"))
+                .imageTag(photo.getPublic_id()));
         addAttributesToModel(model, photo);
 
-        return "redirect:result";
+        return "redirect:main";
 
     }
 
@@ -97,13 +96,13 @@ public class ImageController {
         Transformation transformation =
                 new Transformation().width(1000).height(1000).crop("limit").fetchFormat("png");
 
-        String[] allowedImageFormats = new String[]{"jpg", "png","bmp"};
+        String[] allowedImageFormats = new String[]{"jpg", "png", "bmp"};
 
         return ObjectUtils.asMap(
-                    "public_id", "temp/" + new SimpleDateFormat("yyyy-MM-dd hh-mm-ss").format(new Date()) + "-" + title,
-                    "transformation", transformation,
-                    "allowed_formats", allowedImageFormats
-            );
+                "public_id", "temp/" + new SimpleDateFormat("yyyy-MM-dd hh-mm-ss").format(new Date()) + "-" + title,
+                "transformation", transformation,
+                "allowed_formats", allowedImageFormats
+        );
     }
 
     private Photo getPhotoInstance(Map uploadResult) {
@@ -111,15 +110,75 @@ public class ImageController {
         photo.setPublic_id((String) uploadResult.get("public_id"));
         photo.setUrl((String) uploadResult.get("url"));
         photo.setUser(user);
+        photo.setUserName(user.getName());
         photo.setCreated_at(new Date());
         return photo;
     }
 
     @GetMapping("/result")
-    public String getResultPage(@ModelAttribute Photo photo)
-    {
+    public String getResultPage(@ModelAttribute Photo photo) {
 
         return "result";
+    }
+
+    @GetMapping("/main")
+    public String loadAllPictures(Model model) {
+        model.addAttribute("images", getImagesWithUrls(new Transformation().width(100).height(150).crop("fill")));
+        return "main";
+    }
+
+    public List<PhotoWithUrl> getImagesWithUrls(Transformation transformation) {
+        Iterable<Photo> photos = photoRepository.findAll();
+        List<PhotoWithUrl> urls = new ArrayList<>();
+        for (Photo p : photos) {
+            urls.add(new PhotoWithUrl(p, transformation));
+        }
+        return urls;
+    }
+
+    public List<PhotoWithUrl> getCurrentUserImagesWithUrls(User currentUser ,Transformation transformation)
+    {
+        Iterable<Photo> photos = photoRepository.findByUserName(currentUser.getName());
+        List<PhotoWithUrl> urls = new ArrayList<>();
+        for (Photo p : photos) {
+            urls.add(new PhotoWithUrl(p, transformation));
+        }
+        return urls;
+    }
+
+    @GetMapping("/myimages")
+    public String currentUserImages(Model model, HttpServletRequest request)
+    {
+        model.addAttribute("images", getCurrentUserImagesWithUrls((User)request.getSession().getAttribute("user"),
+                                                        new Transformation().width(200).height(300).crop("fill")));
+        return "myimages";
+    }
+
+    public class PhotoWithUrl {
+        private Photo photo;
+        private String url;
+
+        public PhotoWithUrl(Photo photo, Transformation transformation) {
+            this.photo = photo;
+            this.url = cloudinary.url()
+                    .transformation(transformation).imageTag(photo.getPublic_id());
+        }
+
+        public Photo getPhoto() {
+            return photo;
+        }
+
+        public void setPhoto(Photo photo) {
+            this.photo = photo;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
     }
 
 }
