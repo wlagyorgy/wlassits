@@ -16,5 +16,5 @@ import java.util.List;
 public interface PhotoRepository  extends JpaRepository<Photo, String> {
 
     Iterable<Photo> findByUserName(String name);
-    Iterable<Photo> findByTheUserName(String username);
+    Iterable<Photo> findByUserNameContains(String username);
 }

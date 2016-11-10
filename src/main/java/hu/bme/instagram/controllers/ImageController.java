@@ -148,7 +148,7 @@ public class ImageController {
 
     public List<PhotoWithUrl> getSearchedUserImagesWithUrls(String userName ,Transformation transformation)
     {
-        Iterable<Photo> photos = photoRepository.findByUserName(userName);
+        Iterable<Photo> photos = photoRepository.findByUserNameContains(userName);
         List<PhotoWithUrl> urls = new ArrayList<>();
         for (Photo p : photos) {
             urls.add(new PhotoWithUrl(p, transformation));
