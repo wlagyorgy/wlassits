@@ -110,7 +110,6 @@ public class ImageController {
         photo.setPublic_id((String) uploadResult.get("public_id"));
         photo.setUrl((String) uploadResult.get("url"));
         photo.setUser(user);
-        photo.setUserName(user.getName());
         photo.setCreated_at(new Date());
         return photo;
     }
