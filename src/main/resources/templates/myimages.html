@@ -11,6 +11,11 @@
         <input type="submit" value="Upload"/>
     </p>
 </form>
+<form action="#" th:action="@{/main}" method="get">
+    <p>
+        <input type="submit" value="Vissza"/>
+    </p>
+</form>
 <table>
     <tr th:each="image : ${images}">
         <td th:utext="${image.url}"></td>

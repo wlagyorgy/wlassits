@@ -26,7 +26,7 @@ public class SigninController {
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping("/signin")
+    @GetMapping("/")
     public String signInGet() {
         return "signin";
     }
@@ -43,7 +43,7 @@ public class SigninController {
             idToken = getGoogleIdToken(verifier, idTokenString);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return "signin";
+            return "";
         }
 
         User user = getUserWithUpdatedInfos(idToken);

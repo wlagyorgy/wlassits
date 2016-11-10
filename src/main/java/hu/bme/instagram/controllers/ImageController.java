@@ -46,7 +46,7 @@ public class ImageController {
             model.addAttribute("userImage", user.getGooglePictureUrl());
             return "upload";
         }
-        return "redirect:signin";
+        return "redirect:";
     }
 
     @PostMapping("/upload")
@@ -116,7 +116,6 @@ public class ImageController {
 
     @GetMapping("/result")
     public String getResultPage(@ModelAttribute Photo photo) {
-
         return "result";
     }
 
