@@ -5,6 +5,12 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(
+                name = "Photo.findByTheUserName",
+                query = "SELECT p FROM Photo p WHERE p.user.name LIKE ?1 "
+        )
+})
 public class Photo {
 
     @Id
@@ -17,15 +23,6 @@ public class Photo {
     @JoinColumn(name = "user")
     @NotNull
     private User user;
-//    private String userName;
-//
-//    public String getUserName() {
-//        return userName;
-//    }
-//
-//    public void setUserName(String userName) {
-//        this.userName = userName;
-//    }
 
     public String getPublic_id() {
         return public_id;

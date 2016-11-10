@@ -126,6 +126,7 @@ public class ImageController {
         return "main";
     }
 
+
     public List<PhotoWithUrl> getImagesWithUrls(Transformation transformation) {
         Iterable<Photo> photos = photoRepository.findAll();
         List<PhotoWithUrl> urls = new ArrayList<>();
@@ -145,12 +146,31 @@ public class ImageController {
         return urls;
     }
 
+    public List<PhotoWithUrl> getSearchedUserImagesWithUrls(String userName ,Transformation transformation)
+    {
+        Iterable<Photo> photos = photoRepository.findByUserName(userName);
+        List<PhotoWithUrl> urls = new ArrayList<>();
+        for (Photo p : photos) {
+            urls.add(new PhotoWithUrl(p, transformation));
+        }
+        return urls;
+    }
+
     @GetMapping("/myimages")
     public String currentUserImages(Model model, HttpServletRequest request)
     {
         model.addAttribute("images", getCurrentUserImagesWithUrls((User)request.getSession().getAttribute("user"),
                                                         new Transformation().width(200).height(300).crop("fill")));
         return "myimages";
+    }
+
+    @PostMapping("/userimages")
+    public String searchedUserImagesPost(Model model, HttpServletRequest request)
+    {
+        String searchedUser = request.getParameter("username");
+        model.addAttribute("images", getSearchedUserImagesWithUrls(searchedUser,
+                new Transformation().width(100).height(150).crop("fill")));
+        return "userimages";
     }
 
     public class PhotoWithUrl {
