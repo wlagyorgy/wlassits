@@ -108,7 +108,7 @@ public class ImageController {
     private Photo getPhotoInstance(Map uploadResult) {
         Photo photo = new Photo();
         photo.setPublic_id((String) uploadResult.get("public_id"));
-        photo.setUrl((String) uploadResult.get("url"));
+        //photo.setUrl((String) uploadResult.get("url"));
         photo.setUser(user);
         photo.setCreated_at(new Date());
         return photo;
