@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>TemalabInsta</title>
+</head>
+<body>
+<h2> Result Photos fro tag search</h2>
+<form action="#" th:action="@{/main}" method="get">
+    <p>
+        <input type="submit" value="Back to main"/>
+    </p>
+</form>
+<table>
+    <tr th:each="image : ${images}">
+        <td th:utext="${image.url}"></td>
+        <td th:text="${image.photo.user.name}"> </td>
+    </tr>
+</table>
+</body>
+</html>

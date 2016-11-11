@@ -26,6 +26,7 @@ import java.util.*;
 public class ImageController {
 
     private User user;
+    private String uploadedPhotoName;
 
     @Autowired
     private PhotoRepository photoRepository;
@@ -59,7 +60,7 @@ public class ImageController {
             System.out.println("A fájl mérete nagyobb a megengedett 5MB-nál.");
             return "upload";
         }
-
+        uploadedPhotoName = title;
         Map options = getOptions(title);
 
         Map uploadResult;
@@ -108,9 +109,9 @@ public class ImageController {
     private Photo getPhotoInstance(Map uploadResult) {
         Photo photo = new Photo();
         photo.setPublic_id((String) uploadResult.get("public_id"));
-        //photo.setUrl((String) uploadResult.get("url"));
         photo.setUser(user);
         photo.setCreated_at(new Date());
+        photo.setTitle(uploadedPhotoName);
         return photo;
     }
 
@@ -121,33 +122,15 @@ public class ImageController {
 
     @GetMapping("/main")
     public String loadAllPictures(Model model) {
-        model.addAttribute("images", getImagesWithUrls(new Transformation().width(100).height(150).crop("fill")));
+        Iterable<Photo> photos = photoRepository.findAll();
+        model.addAttribute("images", getSearchedUserImagesWithUrls(photos,
+                                            new Transformation().width(100).height(150).crop("fill")));
         return "main";
     }
 
 
-    public List<PhotoWithUrl> getImagesWithUrls(Transformation transformation) {
-        Iterable<Photo> photos = photoRepository.findAll();
-        List<PhotoWithUrl> urls = new ArrayList<>();
-        for (Photo p : photos) {
-            urls.add(new PhotoWithUrl(p, transformation));
-        }
-        return urls;
-    }
-
-    public List<PhotoWithUrl> getCurrentUserImagesWithUrls(User currentUser ,Transformation transformation)
+    public List<PhotoWithUrl> getSearchedUserImagesWithUrls(Iterable<Photo> photos,Transformation transformation)
     {
-        Iterable<Photo> photos = photoRepository.findByUserName(currentUser.getName());
-        List<PhotoWithUrl> urls = new ArrayList<>();
-        for (Photo p : photos) {
-            urls.add(new PhotoWithUrl(p, transformation));
-        }
-        return urls;
-    }
-
-    public List<PhotoWithUrl> getSearchedUserImagesWithUrls(String userName ,Transformation transformation)
-    {
-        Iterable<Photo> photos = photoRepository.findByUserNameContains(userName);
         List<PhotoWithUrl> urls = new ArrayList<>();
         for (Photo p : photos) {
             urls.add(new PhotoWithUrl(p, transformation));
@@ -158,16 +141,19 @@ public class ImageController {
     @GetMapping("/myimages")
     public String currentUserImages(Model model, HttpServletRequest request)
     {
-        model.addAttribute("images", getCurrentUserImagesWithUrls((User)request.getSession().getAttribute("user"),
+        String userName = ((User)request.getSession().getAttribute("user")).getName();
+        Iterable<Photo> photos = photoRepository.findByUserName(userName);
+        model.addAttribute("images", getSearchedUserImagesWithUrls(photos,
                                                         new Transformation().width(200).height(300).crop("fill")));
         return "myimages";
     }
 
-    @PostMapping("/userimages")
+    @GetMapping("/userimages")
     public String searchedUserImagesPost(Model model, HttpServletRequest request)
     {
         String searchedUser = request.getParameter("username");
-        model.addAttribute("images", getSearchedUserImagesWithUrls(searchedUser,
+        Iterable<Photo> photos = photoRepository.findByUserNameContains(searchedUser);
+        model.addAttribute("images", getSearchedUserImagesWithUrls(photos,
                 new Transformation().width(100).height(150).crop("fill")));
         return "userimages";
     }

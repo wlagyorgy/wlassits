@@ -1,16 +1,11 @@
 package hu.bme.instagram.entity;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
-@NamedQueries({
-        @NamedQuery(
-                name = "Photo.findByTheUserName",
-                query = "SELECT p FROM Photo p WHERE p.user.name LIKE ?1 "
-        )
-})
 public class Photo {
 
     @Id
@@ -18,10 +13,19 @@ public class Photo {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date created_at;
+    private String title;
     @ManyToOne
     @JoinColumn(name = "user")
     @NotNull
     private User user;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getPublic_id() {
         return public_id;
