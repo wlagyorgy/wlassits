@@ -6,6 +6,10 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
+@NamedQuery(
+        name="Photo.searchForTitle",
+        query = "select p from Photo p where p.title like :tag"
+)
 public class Photo {
 
     @Id

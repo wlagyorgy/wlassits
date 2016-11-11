@@ -122,7 +122,8 @@ public class ImageController {
 
     @GetMapping("/main")
     public String loadAllPictures(Model model) {
-        Iterable<Photo> photos = photoRepository.findAll();
+        List<Photo> photos = photoRepository.findAll();
+        Collections.sort(photos,new PhotoComparator());
         model.addAttribute("images", getSearchedUserImagesWithUrls(photos,
                                             new Transformation().width(100).height(150).crop("fill")));
         return "main";
@@ -142,7 +143,8 @@ public class ImageController {
     public String currentUserImages(Model model, HttpServletRequest request)
     {
         String userName = ((User)request.getSession().getAttribute("user")).getName();
-        Iterable<Photo> photos = photoRepository.findByUserName(userName);
+        List<Photo> photos = photoRepository.findByUserName(userName);
+        Collections.sort(photos,new PhotoComparator());
         model.addAttribute("images", getSearchedUserImagesWithUrls(photos,
                                                         new Transformation().width(200).height(300).crop("fill")));
         return "myimages";
@@ -152,7 +154,8 @@ public class ImageController {
     public String searchedUserImagesPost(Model model, HttpServletRequest request)
     {
         String searchedUser = request.getParameter("username");
-        Iterable<Photo> photos = photoRepository.findByUserNameContains(searchedUser);
+        List<Photo> photos = photoRepository.findByUserNameContains(searchedUser);
+        Collections.sort(photos,new PhotoComparator());
         model.addAttribute("images", getSearchedUserImagesWithUrls(photos,
                 new Transformation().width(100).height(150).crop("fill")));
         return "userimages";
@@ -162,7 +165,8 @@ public class ImageController {
     public String searchedByTag(Model model, HttpServletRequest request)
     {
         String searchedTag = request.getParameter("imagetag");
-        Iterable<Photo> photos = photoRepository.findByTitleContains(searchedTag);
+        List<Photo> photos = photoRepository.findByTitleContains(searchedTag);
+        Collections.sort(photos, new PhotoComparator());
         model.addAttribute("images", getSearchedUserImagesWithUrls(photos,
                 new Transformation().width(150).height(200).crop("fill")));
         return "tagresultimages";

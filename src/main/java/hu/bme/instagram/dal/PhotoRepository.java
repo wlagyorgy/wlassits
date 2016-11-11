@@ -15,7 +15,8 @@ import java.util.List;
 @Repository
 public interface PhotoRepository  extends JpaRepository<Photo, String> {
 
-    Iterable<Photo> findByUserName(String name);
-    Iterable<Photo> findByUserNameContains(String username);
-    Iterable<Photo> findByTitleContains(String title);
+    List<Photo> findByUserName(String name);
+    List<Photo> findByUserNameContains(String username);
+    List<Photo> findByTitleContains(String title);
+    List<Photo> searchForTitle(String tag);
 }
