@@ -17,4 +17,5 @@ public interface PhotoRepository  extends JpaRepository<Photo, String> {
 
     Iterable<Photo> findByUserName(String name);
     Iterable<Photo> findByUserNameContains(String username);
+    Iterable<Photo> findByTitleContains(String title);
 }

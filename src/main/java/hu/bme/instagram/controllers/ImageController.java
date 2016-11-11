@@ -158,6 +158,16 @@ public class ImageController {
         return "userimages";
     }
 
+    @GetMapping("/tagresultimages")
+    public String searchedByTag(Model model, HttpServletRequest request)
+    {
+        String searchedTag = request.getParameter("imagetag");
+        Iterable<Photo> photos = photoRepository.findByTitleContains(searchedTag);
+        model.addAttribute("images", getSearchedUserImagesWithUrls(photos,
+                new Transformation().width(150).height(200).crop("fill")));
+        return "tagresultimages";
+    }
+
     public class PhotoWithUrl {
         private Photo photo;
         private String url;

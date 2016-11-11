@@ -6,20 +6,30 @@
 </head>
 <body>
 <form action="#" th:action="@{/upload}" method="get">
-    <p>
+    <div>
         <input type="submit" value="Upload"/>
-    </p>
+    </div>
 </form>
 <form action="#" th:action="@{/myimages}" method="get">
-    <p>
+    <div>
         <input type="submit" value="My Images"/>
-    </p>
+    </div>
 </form>
+<br/>
 <form action="#" th:action="@{/userimages}" method="get">
-    <p>
-        <input type="text"  name="username"/>
-        <input type="submit" value="Find Images by User"/>
-    </p>
+    <div>
+        <label name="namelabel" for="name">Search for user: </label>
+        <input id="name" type="text"  name="username"/>
+        <input type="submit" value="Find"/>
+    </div>
+</form>
+<br/>
+<form action="#" th:action="@{/tagresultimages}" method="get">
+    <div>
+        <label name="taglabel" for="tag">Search for title: </label>
+        <input id="tag" type="text"  name="imagetag"/>
+        <input type="submit" value="Find"/>
+    </div>
 </form>
 <table>
     <tr th:each="image : ${images}">
