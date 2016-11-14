@@ -1,43 +1,86 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet"/>
+
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <!-- Generic page styles -->
+    <link rel="stylesheet" href="/css/style.css"/>
+
     <title>TemalabInsta</title>
 </head>
 <body>
-<form action="#" th:action="@{/upload}" method="get">
-    <div>
-        <input type="submit" value="Upload"/>
+<div class="container">
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    <img alt="Brand" class="" src="images\icon.png"/>
+                </a>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                <form action="#" th:action="@{/myimages}" method="get">
+                    <button type="submit" class="btn btn-default"><i class="material-icons">home</i></button>
+                </form>
+            </ul>
+        </div><!-- /.container-fluid -->
+    </nav>
+
+
+    <div class="row">
+        <form action="#" th:action="@{/userimages}" method="get">
+            <div class="col-lg-5">
+                <div class="input-group">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="submit"><i class="material-icons">search</i></button>
+      </span>
+                    <input type="text" class="form-control" name="username" placeholder="Search for users..."/>
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-5 -->
+        </form>
+        <form action="#" th:action="@{/tagresultimages}" method="get">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="imagetag" placeholder="Search for titles..."/>
+                    <span class="input-group-btn">
+        <button class="btn btn-default" type="submit"><i class="material-icons">search</i></button>
+      </span>
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+        </form>
+
+        <div class="col-lg-1">
+            <form action="#" th:action="@{/upload}" method="get">
+                <button class="btn btn-default" type="submit"><i class="material-icons">file_upload</i></button>
+            </form>
+        </div>
+
+
+    </div><!-- /.row -->
+
+
+    <div class="row">
+        <div class=" col-xs-12 col-sm-6 col-md-4" th:each="image : ${images}">
+            <article class="photo-article">
+                <header>
+                    <h5 th:text="${image.photo.user.name}"></h5>
+                </header>
+                <div class="img-rounded" th:utext="${image.url}"></div>
+                <div th:text="${image.photo.title}"></div>
+            </article>
+        </div>
     </div>
-</form>
-<br/>
-<form action="#" th:action="@{/myimages}" method="get">
-    <div>
-        <input type="submit" value="My Images"/>
-    </div>
-</form>
-<br/>
-<form action="#" th:action="@{/userimages}" method="get">
-    <div>
-        <label name="namelabel" for="name">Search for user: </label>
-        <input id="name" type="text"  name="username"/>
-        <input type="submit" value="Find"/>
-    </div>
-</form>
-<br/>
-<form action="#" th:action="@{/tagresultimages}" method="get">
-    <div>
-        <label name="taglabel" for="tag">Search for title: </label>
-        <input id="tag" type="text"  name="imagetag"/>
-        <input type="submit" value="Find"/>
-    </div>
-</form>
-<table>
-    <tr th:each="image : ${images}">
-        <td th:utext="${image.url}"></td>
-        <td th:text="${image.photo.user.name}"> </td>
-        <td th:text="${image.photo.title}"> </td>
-    </tr>
-</table>
+</div>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>

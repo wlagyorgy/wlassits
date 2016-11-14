@@ -125,7 +125,7 @@ public class ImageController {
         List<Photo> photos = photoRepository.findAll();
         Collections.sort(photos,new PhotoComparator());
         model.addAttribute("images", getSearchedUserImagesWithUrls(photos,
-                                            new Transformation().width(100).height(150).crop("fill")));
+                                            new Transformation().width(300).height(300).crop("fill")));
         return "main";
     }
 

@@ -1,13 +1,47 @@
 @charset "UTF-8";
 
-body {
+body{
     padding-top: 60px;
+    background-color: #fafafa;
 }
 
-.container {
-    max-width: 600px;
-}
+/*.container {*/
+    /*max-width: 600px;*/
+/*}*/
 
 #signin-wrapper{
     display: inline-block;
+}
+
+.photo-article{
+    text-align: center;
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    border:1px solid #dddddd;
+    border-radius: 10px;
+
+    }
+
+.photo-article header{
+    text-align: left;
+}
+
+.form-control{
+    height: 50px;
+}
+
+.material-icons{
+    font-size: 31px;
+}
+
+.navbar-brand {
+    height: 0px;
+    padding: 5px;
+}
+
+
+.navbar-brand img{
+    height: 40px;
 }
