@@ -76,7 +76,6 @@ public class ImageController {
         photoRepository.save(photo);
 
         redirectAttributes.addFlashAttribute("photo", cloudinary.url()
-                .transformation(new Transformation().width(100).height(150).crop("fill"))
                 .imageTag(photo.getPublic_id()));
         addAttributesToModel(model, photo);
 
