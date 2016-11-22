@@ -20,7 +20,7 @@ import java.util.Collections;
 @Controller
 @Scope("session")
 public class SigninController {
-    //    Google API clien id for google sign-in auth2
+    //    Google API client id for google sign-in auth2
     private final static String CLIENT_ID = "941751993774-vcefv09ou5poadotds1e0clvsma43qjd.apps.googleusercontent.com";
 
     @Autowired
