@@ -11,6 +11,8 @@ $(document).ready( function() {
         console.log(label);
         var filename = document.createElement("LABEL");
         filename.innerHTML = label;
+        filename.className += "label label-default";
+        filename.style = "font-size:24px; position:absolute; margin-top:auto; border: 3px solid blue;";
         var span = document.getElementById("uploadFileName");
         if (span.firstChild) {
             span.removeChild(span.firstChild);

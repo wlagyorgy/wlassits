@@ -56,17 +56,23 @@
         </form>
     </div><!-- /.row -->
 
-    <div class="row">
+    <div class="row no-gutter">
         <form action="#" th:action="@{/upload}" method="post" enctype="multipart/form-data">
-            <label class="btn btn-default btn-file">
-                <i class="material-icons">folder_open</i>
-                <input id="fileupload" class="" name="image" type="file" accept="image/*" style="display: none"/>
-            </label>
-            <span id="uploadFileName"></span>
-            <input name="title" class="form-control" placeholder="Name..." type="text"/>
-            <button class="btn btn-default" type="submit" value="Submit">
-                <i class="material-icons">cloud_upload</i>
-            </button>
+            <div class="col-md-2">
+                <label class="btn btn-default btn-file input-group-btn">
+                    <i class="material-icons">folder_open</i>
+                    <input id="fileupload" class="" name="image" type="file" accept="image/*" style="display: none"/>
+                </label>
+            </div>
+            <div class="col-md-5">
+                <input name="title" class="form-control" placeholder="Name..." type="text"/>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-default" type="submit" value="Submit">
+                    <i class="material-icons">cloud_upload</i>
+                </button>
+            </div>
+            <div class="col-md-3" id="uploadFileName"></div>
         </form>
     </div>
 
