@@ -58,12 +58,13 @@
 
     <div class="row">
         <form action="#" th:action="@{/upload}" method="post" enctype="multipart/form-data">
-            <label class="btn btn-default btn-file col-md-3">
+            <label class="btn btn-default btn-file">
                 <i class="material-icons">folder_open</i>
                 <input id="fileupload" class="" name="image" type="file" accept="image/*" style="display: none"/>
             </label>
-            <input name="title" class="form-control col-md-7" placeholder="Name..." type="text"/>
-            <button class="btn btn-default col-md-2" type="submit" value="Submit">
+            <span id="uploadFileName"></span>
+            <input name="title" class="form-control" placeholder="Name..." type="text"/>
+            <button class="btn btn-default" type="submit" value="Submit">
                 <i class="material-icons">cloud_upload</i>
             </button>
         </form>
@@ -87,5 +88,6 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script src="js/main.js"></script>
+
 </body>
 </html>
