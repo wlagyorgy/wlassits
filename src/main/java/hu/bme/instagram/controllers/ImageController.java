@@ -23,7 +23,6 @@ import static hu.bme.instagram.Utilities.Constants.cloudinary;
 @Scope("session")
 public class ImageController {
 
-    private static User user;
     private static String uploadedPhotoName;
 
     @Autowired
@@ -38,11 +37,11 @@ public class ImageController {
     public String loadAllPictures(Model model,
                                   HttpServletRequest request) {
         List<Photo> photos = photoRepository.findAll();
-        Collections.sort(photos,new PhotoComparator());
+        Collections.sort(photos, new PhotoComparator());
         model.addAttribute("images", getSearchedUserImagesWithUrls(photos,
-                                            new Transformation().width(300).height(300).crop("fill")));
+                new Transformation().width(300).height(300).crop("fill")));
 
-        user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");
 
         if (user != null) {
             model.addAttribute("userName", user.getName());
@@ -52,41 +51,28 @@ public class ImageController {
         return "redirect:signin";
     }
 
-
-    public List<PhotoWithUrl> getSearchedUserImagesWithUrls(Iterable<Photo> photos,Transformation transformation)
-    {
-        List<PhotoWithUrl> urls = new ArrayList<>();
-        for (Photo p : photos) {
-            urls.add(new PhotoWithUrl(p, transformation));
-        }
-        return urls;
-    }
-
     @GetMapping("/myimages")
-    public String currentUserImages(Model model, HttpServletRequest request)
-    {
-        String userName = ((User)request.getSession().getAttribute("user")).getName();
+    public String currentUserImages(Model model, HttpServletRequest request) {
+        String userName = ((User) request.getSession().getAttribute("user")).getName();
         List<Photo> photos = photoRepository.findByUserName(userName);
-        Collections.sort(photos,new PhotoComparator());
+        Collections.sort(photos, new PhotoComparator());
         model.addAttribute("images", getSearchedUserImagesWithUrls(photos,
-                                                        new Transformation().width(200).height(300).crop("fill")));
+                new Transformation().width(200).height(300).crop("fill")));
         return "myimages";
     }
 
     @GetMapping("/userimages")
-    public String searchedUserImagesPost(Model model, HttpServletRequest request)
-    {
+    public String searchedUserImagesPost(Model model, HttpServletRequest request) {
         String searchedUser = request.getParameter("username");
         List<Photo> photos = photoRepository.findByUserNameContains(searchedUser);
-        Collections.sort(photos,new PhotoComparator());
+        Collections.sort(photos, new PhotoComparator());
         model.addAttribute("images", getSearchedUserImagesWithUrls(photos,
                 new Transformation().width(100).height(150).crop("fill")));
         return "userimages";
     }
 
     @GetMapping("/tagresultimages")
-    public String searchedByTag(Model model, HttpServletRequest request)
-    {
+    public String searchedByTag(Model model, HttpServletRequest request) {
         String searchedTag = request.getParameter("imagetag");
         List<Photo> photos = photoRepository.findByTitleContains(searchedTag);
         Collections.sort(photos, new PhotoComparator());
@@ -95,11 +81,19 @@ public class ImageController {
         return "tagresultimages";
     }
 
-    public class PhotoWithUrl {
+    private List<PhotoWithUrl> getSearchedUserImagesWithUrls(Iterable<Photo> photos, Transformation transformation) {
+        List<PhotoWithUrl> urls = new ArrayList<>();
+        for (Photo p : photos) {
+            urls.add(new PhotoWithUrl(p, transformation));
+        }
+        return urls;
+    }
+
+    private class PhotoWithUrl {
         private Photo photo;
         private String url;
 
-        public PhotoWithUrl(Photo photo, Transformation transformation) {
+        PhotoWithUrl(Photo photo, Transformation transformation) {
             this.photo = photo;
             this.url = cloudinary.url()
                     .transformation(transformation).imageTag(photo.getPublic_id());
@@ -122,13 +116,13 @@ public class ImageController {
         }
     }
 
-    class PhotoComparator implements Comparator<Photo> {
+    private class PhotoComparator implements Comparator<Photo> {
 
         @Override
         public int compare(Photo p1, Photo p2) {
-            if(p1.getCreated_at().after(p2.getCreated_at()))
+            if (p1.getCreated_at().after(p2.getCreated_at()))
                 return -1;
-            else if(p1.getCreated_at().before(p2.getCreated_at()))
+            else if (p1.getCreated_at().before(p2.getCreated_at()))
                 return 1;
             else
                 return 0;

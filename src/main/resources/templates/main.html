@@ -56,16 +56,18 @@
         </form>
     </div><!-- /.row -->
 
+    <!-- upload-row -->
     <div class="row no-gutter">
         <form action="#" th:action="@{/upload}" method="post" enctype="multipart/form-data">
             <div class="col-md-2">
                 <label class="btn btn-default btn-file input-group-btn">
                     <i class="material-icons">folder_open</i>
-                    <input id="fileupload" class="" name="image" type="file" accept="image/*" style="display: none"/>
+                    <input id="fileupload" class="" name="image" type="file" accept="image/*" style="display: none"
+                           required="true" />
                 </label>
             </div>
             <div class="col-md-5">
-                <input name="title" class="form-control" placeholder="Name..." type="text"/>
+                <input name="title" class="form-control" placeholder="Name..." type="text" required="true"/>
             </div>
             <div class="col-md-2">
                 <button class="btn btn-default" type="submit" value="Submit">
@@ -75,7 +77,7 @@
             <div class="col-md-3" id="uploadFileName"></div>
         </form>
     </div>
-
+    <!-- /upload-row -->
 
     <div class="row">
         <div class=" col-xs-12 col-sm-6 col-md-4" th:each="image : ${images}">

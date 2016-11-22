@@ -1,4 +1,4 @@
-package hu.bme.instagram.errors;
+package hu.bme.instagram.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,5 +16,4 @@ public class ErrorController {
     public String postError() {
         return "error";
     }
-
 }

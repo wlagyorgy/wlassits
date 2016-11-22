@@ -5,6 +5,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import hu.bme.instagram.Utilities.Constants;
 import hu.bme.instagram.dal.UserRepository;
 import hu.bme.instagram.entity.User;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
@@ -20,8 +21,6 @@ import java.util.Collections;
 @Controller
 @Scope("session")
 public class SigninController {
-    //    Google API client id for google sign-in auth2
-    private final static String CLIENT_ID = "941751993774-vcefv09ou5poadotds1e0clvsma43qjd.apps.googleusercontent.com";
 
     @Autowired
     UserRepository userRepository;
@@ -79,7 +78,7 @@ public class SigninController {
         NetHttpTransport transport = new NetHttpTransport();
 
         return new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
-                .setAudience(Collections.singletonList(CLIENT_ID))
+                .setAudience(Collections.singletonList(Constants.CLIENT_ID))
                 .setIssuer("accounts.google.com")
                 .build();
     }
