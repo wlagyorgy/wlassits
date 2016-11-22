@@ -120,12 +120,21 @@ public class ImageController {
     }
 
     @GetMapping("/main")
-    public String loadAllPictures(Model model) {
+    public String loadAllPictures(Model model,
+                                  HttpServletRequest request) {
         List<Photo> photos = photoRepository.findAll();
         Collections.sort(photos,new PhotoComparator());
         model.addAttribute("images", getSearchedUserImagesWithUrls(photos,
                                             new Transformation().width(300).height(300).crop("fill")));
-        return "main";
+
+        user = (User) request.getSession().getAttribute("user");
+
+        if (user != null) {
+            model.addAttribute("userName", user.getName());
+            model.addAttribute("userImage", user.getGooglePictureUrl());
+            return "main";
+        }
+        return "redirect:signin";
     }
 
 
