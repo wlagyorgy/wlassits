@@ -3,6 +3,7 @@ package hu.bme.instagram.controllers;
 import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
 import hu.bme.instagram.dal.PhotoRepository;
+import hu.bme.instagram.entity.Like;
 import hu.bme.instagram.entity.Photo;
 import hu.bme.instagram.entity.User;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
@@ -117,6 +118,7 @@ public class UploadController {
         photo.setUser(user);
         photo.setCreated_at(new Date());
         photo.setTitle(uploadedPhotoName);
+        photo.setLike(new Like());
         return photo;
     }
 }
