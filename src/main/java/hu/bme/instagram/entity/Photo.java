@@ -3,6 +3,7 @@ package hu.bme.instagram.entity;
 import javax.annotation.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -18,6 +19,7 @@ public class Photo {
     @Temporal(TemporalType.TIMESTAMP)
     private Date created_at;
 
+    @Size(min=1)
     private String title;
 
     @ManyToOne
