@@ -42,7 +42,7 @@ public class UploadController {
         if (user != null) {
             model.addAttribute("userName", user.getName());
             model.addAttribute("userImage", user.getGooglePictureUrl());
-            return "upload";
+            return "main";
         }
 
         return "redirect:signin";
@@ -66,7 +66,7 @@ public class UploadController {
 
         if (uploadedPhoto.getSize() > 5000000) {
             System.out.println("File exceeds 5MB upload limit.");
-            return "upload";
+            return "main";
         }
         uploadedPhotoName = title;
         Map options = getOptions(title);
@@ -76,7 +76,7 @@ public class UploadController {
             uploadResult = cloudinary.uploader().upload(uploadedPhoto.getBytes(), options);
         } catch (IOException e) {
             System.out.println("Error at upload:\n" + e.getMessage());
-            return "upload";
+            return "main";
         }
 
         Photo photo = getPhotoInstance(uploadResult);
@@ -112,7 +112,7 @@ public class UploadController {
         );
     }
 
-    public Photo getPhotoInstance(Map uploadResult) {
+    private Photo getPhotoInstance(Map uploadResult) {
         Photo photo = new Photo();
         photo.setPublic_id((String) uploadResult.get("public_id"));
         photo.setUser(user);

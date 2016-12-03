@@ -51,7 +51,7 @@ public class SigninController {
         System.out.println("Adding user to session memory");
         request.getSession().setAttribute("user", user);
 
-        return "upload";
+        return "main";
     }
 
     private User saveUserInDB(User user) {
