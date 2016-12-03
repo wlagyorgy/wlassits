@@ -9,12 +9,12 @@ import java.util.List;
 @Embeddable
 public class Like {
 
-    private int likeCount=0;
+    private int likeCount = 0;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> likes;
 
-    public Like(){
-        likeCount=0;
+    public Like() {
+        likeCount = 0;
         likes = new ArrayList<>();
     }
 
@@ -34,8 +34,7 @@ public class Like {
         this.likes = likes;
     }
 
-    public void addOne()
-    {
-        likeCount+= 1;
+    public void addOne() {
+        likeCount += 1;
     }
 }

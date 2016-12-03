@@ -25,9 +25,16 @@
             </div>
 
             <ul class="nav navbar-nav navbar-right">
-                <form action="#" th:action="@{/myimages}" method="get">
-                    <button type="submit" class="btn btn-default"><i class="material-icons">account_box</i></button>
-                </form>
+                <li>
+                    <a th:href="@{/myimages}">
+                        <h3 th:text="${userName}"></h3>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/myimages}">
+                        <img th:attr="src=${userImage}" width="50" />
+                    </a>
+                </li>
             </ul>
         </div><!-- /.container-fluid -->
     </nav>

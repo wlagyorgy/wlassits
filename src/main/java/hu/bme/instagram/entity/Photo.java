@@ -19,7 +19,7 @@ public class Photo {
     @Temporal(TemporalType.TIMESTAMP)
     private Date created_at;
 
-    @Size(min=1)
+    @Size(min = 1)
     private String title;
 
     @ManyToOne
