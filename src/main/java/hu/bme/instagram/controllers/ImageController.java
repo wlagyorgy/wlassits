@@ -37,48 +37,33 @@ public class ImageController {
     public String loadAllPictures(Model model,
                                   HttpServletRequest request) {
         List<Photo> photos = photoRepository.findAll();
-        Collections.sort(photos, new PhotoComparator());
-        model.addAttribute("images", getSearchedUserImagesWithUrls(photos,
-                new Transformation().width(300).height(300).crop("fill")));
+        addImagesToModel(model, photos);
 
-        User user = (User) request.getSession().getAttribute("user");
-
-        if (user != null) {
-            model.addAttribute("userName", user.getName());
-            model.addAttribute("userImage", user.getGooglePictureUrl());
-            return "main";
-        }
-        return "redirect:signin";
+        return loadMain(model, request, photos);
     }
 
     @GetMapping("/myimages")
     public String currentUserImages(Model model, HttpServletRequest request) {
         String userName = ((User) request.getSession().getAttribute("user")).getName();
         List<Photo> photos = photoRepository.findByUserName(userName);
-        Collections.sort(photos, new PhotoComparator());
-        model.addAttribute("images", getSearchedUserImagesWithUrls(photos,
-                new Transformation().width(200).height(300).crop("fill")));
-        return "myimages";
+
+        return loadMain(model, request, photos);
     }
 
     @GetMapping("/userimages")
     public String searchedUserImagesPost(Model model, HttpServletRequest request) {
         String searchedUser = request.getParameter("username");
         List<Photo> photos = photoRepository.findByUserNameContains(searchedUser);
-        Collections.sort(photos, new PhotoComparator());
-        model.addAttribute("images", getSearchedUserImagesWithUrls(photos,
-                new Transformation().width(100).height(150).crop("fill")));
-        return "userimages";
+
+        return loadMain(model, request, photos);
     }
 
     @GetMapping("/tagresultimages")
     public String searchedByTag(Model model, HttpServletRequest request) {
         String searchedTag = request.getParameter("imagetag");
         List<Photo> photos = photoRepository.findByTitleContains(searchedTag);
-        Collections.sort(photos, new PhotoComparator());
-        model.addAttribute("images", getSearchedUserImagesWithUrls(photos,
-                new Transformation().width(150).height(200).crop("fill")));
-        return "tagresultimages";
+
+        return loadMain(model, request, photos);
     }
 
     private List<PhotoWithUrl> getSearchedUserImagesWithUrls(Iterable<Photo> photos, Transformation transformation) {
@@ -87,6 +72,23 @@ public class ImageController {
             urls.add(new PhotoWithUrl(p, transformation));
         }
         return urls;
+    }
+
+    private String loadMain(Model model, HttpServletRequest request, List<Photo> photos) {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            addImagesToModel(model, photos);
+            model.addAttribute("userName", user.getName());
+            model.addAttribute("userImage", user.getGooglePictureUrl());
+            return "main";
+        }
+        return "redirect:signin";
+    }
+
+    private void addImagesToModel(Model model, List<Photo> photos) {
+        Collections.sort(photos, new PhotoComparator());
+        model.addAttribute("images", getSearchedUserImagesWithUrls(photos,
+                new Transformation().width(300).height(300).crop("fill")));
     }
 
     private class PhotoWithUrl {
