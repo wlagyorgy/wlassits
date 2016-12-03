@@ -25,7 +25,7 @@ public class SigninController {
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping("/")
+    @GetMapping(value={"/", "/signin"})
     public String signInGet() {
         return "signin";
     }

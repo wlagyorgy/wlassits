@@ -65,7 +65,7 @@ public class UploadController {
         model.addAttribute("userImage", user.getGooglePictureUrl());
 
         if (uploadedPhoto.getSize() > 5000000) {
-            System.out.println("A fájl mérete nagyobb a megengedett 5MB-nál.");
+            System.out.println("File exceeds 5MB upload limit.");
             return "upload";
         }
         uploadedPhotoName = title;

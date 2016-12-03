@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @NamedQuery(
-        name="Photo.searchForTitle",
+        name = "Photo.searchForTitle",
         query = "select p from Photo p where p.title like :tag"
 )
 public class Photo {
@@ -17,16 +17,20 @@ public class Photo {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date created_at;
+
     private String title;
+
     @ManyToOne
     @JoinColumn(name = "user")
     @NotNull
     private User user;
+
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "likeCount", column=@Column(name = "likecount")),
-            @AttributeOverride(name = "likes", column = @Column(name = "liker"))
+            @AttributeOverride(name = "likeCount", column = @Column(name = "likecount")),
+            @AttributeOverride(name = "likes", column = @Column(name = "likes"))
     })
+
     private Like like;
 
     public Like getLike() {
