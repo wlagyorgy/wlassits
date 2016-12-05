@@ -94,6 +94,15 @@
                 </header>
                 <div class="img-rounded" th:utext="${image.url}"></div>
                 <div th:text="${image.photo.title}"></div>
+
+                <bottom>
+                    <p align="center">
+                        <input type="image" src="images\notlike.png" class="notlike" onclick="toggle(this);" />
+                    </p>
+
+
+                    <a href="likes.html"> Number of likes </a>
+                </bottom>
             </article>
         </div>
     </div>
@@ -103,6 +112,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script src="js/main.js"></script>
+<script src="js/like.js"></script>
 
 </body>
 </html>

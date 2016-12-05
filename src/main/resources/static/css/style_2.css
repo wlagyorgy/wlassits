@@ -6,7 +6,7 @@ body{
 }
 
 /*.container {*/
-    /*max-width: 600px;*/
+/*max-width: 600px;*/
 /*}*/
 
 #signin-wrapper{
@@ -22,7 +22,7 @@ body{
     border:1px solid #dddddd;
     border-radius: 10px;
 
-    }
+}
 
 .photo-article header{
     text-align: left;
@@ -78,4 +78,3 @@ body{
     padding-left: 0;
 }
 
-.like, .notlike {width:40px;height:40px;}
